@@ -1,0 +1,12 @@
+NEUROTRACE — MOTOR PATTERN INTELLIGENCE
+Browser-side research inference
+
+Selected modality: spiral
+Input resolution: 224 × 224 RGB
+Backbone: EfficientNetB0
+Inference: local TensorFlow.js runtime
+Image transfer: none; processed in browser
+Model output: none
+
+
+Research demonstrator only. The output is not a diagnosis and has not been clinically validated.
