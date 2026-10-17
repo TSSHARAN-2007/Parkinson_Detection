@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parkinson’s Disease Detection · Spiral & Wave</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040b24;--panel:#0a1740;--panel2:#0d1f55;--edge:#1d3d94;--neon:#2de2ff;--neon2:#8a6bff;--ok:#3dffb0;--warn:#ff5fa2;--text:#fff;--dim:rgba(255,255,255,.72)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(1200px 700px at 85% -10%,#10297a 0%,transparent 60%),var(--bg);color:var(--text);font:400 17px/1.6 "IBM Plex Sans",system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;line-height:1.1}
+a{color:var(--neon)}
+:focus-visible{outline:2px solid var(--neon);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.brand{font:800 20px Sora,sans-serif;text-shadow:0 0 14px var(--neon)}
+nav div a{margin-left:26px;color:var(--text);text-decoration:none;opacity:.8}
+nav div a:hover{opacity:1;text-shadow:0 0 10px var(--neon)}
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:start;padding:36px 0 80px;position:relative}
+.hero-art{position:absolute;left:-120px;top:-40px;width:620px;height:620px;opacity:.55;pointer-events:none;z-index:0}
+.hero-art path{fill:none;stroke:var(--neon);stroke-width:2;filter:drop-shadow(0 0 6px var(--neon));stroke-dasharray:6000;stroke-dashoffset:6000;animation:draw 3.2s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.copy{position:relative;z-index:1;padding-top:40px}
+h1{font-size:clamp(38px,5.2vw,64px);font-weight:800;letter-spacing:-.02em;text-shadow:0 0 28px rgba(45,226,255,.35)}
+.lead{margin:22px 0 28px;max-width:46ch;color:var(--dim)}
+.cta{display:inline-block;padding:13px 26px;border-radius:10px;background:var(--neon);color:#021033;font:600 16px Sora,sans-serif;text-decoration:none;box-shadow:0 0 24px rgba(45,226,255,.55)}
+.facts{display:flex;gap:30px;margin-top:40px;flex-wrap:wrap}
+.facts b{display:block;font:800 30px Sora,sans-serif;color:var(--neon);text-shadow:0 0 12px rgba(45,226,255,.6)}
+.facts span{font-size:14px;color:var(--dim)}
+.studio{position:relative;z-index:1;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--edge);border-radius:20px;padding:22px;box-shadow:0 0 0 1px rgba(45,226,255,.08),0 0 50px rgba(45,226,255,.14)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;padding:10px;border-radius:10px;border:1px solid var(--edge);background:transparent;color:var(--text);font:600 15px Sora,sans-serif;cursor:pointer}
+.tab[aria-selected=true]{background:rgba(45,226,255,.14);border-color:var(--neon);box-shadow:0 0 16px rgba(45,226,255,.35)}
+.tab i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-left:8px;box-shadow:0 0 8px var(--ok);opacity:0}
+.tab.has i{opacity:1}
+.stage{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;border:1px solid var(--edge);background:#fff;touch-action:none}
+.stage canvas,.stage svg{position:absolute;inset:0;width:100%;height:100%}
+.stage canvas{cursor:crosshair}
+.stage svg{pointer-events:none}
+.stage svg path{fill:none;stroke:#8aa4e6;stroke-width:2;stroke-dasharray:7 9}
+.hint{position:absolute;inset:auto 0 12px;text-align:center;color:#41558f;font-size:14px;pointer-events:none;transition:opacity .2s}
+.tools{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+.btn{padding:9px 16px;border-radius:9px;border:1px solid var(--edge);background:rgba(255,255,255,.04);color:var(--text);font:500 15px "IBM Plex Sans",sans-serif;cursor:pointer}
+.btn:hover{border-color:var(--neon)}
+.go{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(90deg,var(--neon),var(--neon2));color:#02102f;font:800 17px Sora,sans-serif;cursor:pointer;box-shadow:0 0 28px rgba(45,226,255,.45)}
+.go:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+#out{margin-top:18px;display:grid;gap:12px}
+.res{background:rgba(2,10,40,.6);border:1px solid var(--edge);border-radius:12px;padding:14px 16px}
+.res.final{border-color:var(--neon2);box-shadow:0 0 20px rgba(138,107,255,.35)}
+.res header{display:flex;justify-content:space-between;font:600 15px Sora,sans-serif}
+.bar{height:10px;border-radius:6px;background:#0b1a4d;margin:10px 0 8px;position:relative;overflow:hidden}
+.bar u{position:absolute;inset:0 auto 0 0;width:0;border-radius:6px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar s{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:#fff;opacity:.6}
+.res p{font-size:15px;color:var(--dim)}
+.pos u{background:var(--warn);box-shadow:0 0 12px var(--warn)}
+.neg u{background:var(--ok);box-shadow:0 0 12px var(--ok)}
+.msg{font-size:15px;padding:12px 14px;border-radius:10px;border:1px solid var(--warn);background:rgba(255,95,162,.08)}
+.msg code{background:rgba(255,255,255,.12);padding:1px 6px;border-radius:5px}
+.stat{font-size:13px;margin-bottom:12px;padding:8px 12px;border-radius:9px;border:1px solid var(--edge);color:var(--dim);display:none}
+.stat.ok{display:block;border-color:var(--ok);color:var(--ok)}
+.stat.bad{display:block;border-color:#ffd166;color:#ffd166}
+.sim{border-color:#ffd166;color:#ffd166;background:rgba(255,209,102,.08)}
+section{padding:70px 0;border-top:1px solid rgba(29,61,148,.6)}
+h2{font-size:clamp(28px,3.4vw,40px);font-weight:800;margin-bottom:14px}
+.sub{max-width:62ch;color:var(--dim);margin-bottom:34px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.flow div{padding:20px;border:1px solid var(--edge);border-radius:14px;background:var(--panel)}
+.flow h3{font-size:19px;margin-bottom:8px;color:var(--neon)}
+.flow p{font-size:15px;color:var(--dim)}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.score{padding:24px;border-radius:16px;background:var(--panel);border:1px solid var(--edge)}
+.score b{font:800 52px Sora,sans-serif;color:var(--neon);text-shadow:0 0 18px rgba(45,226,255,.55)}
+.score h3{margin:4px 0 12px;font-size:19px}
+.score p{font-size:15px;color:var(--dim)}
+.cm{display:grid;grid-template-columns:repeat(2,52px);gap:4px;margin-top:14px;font:600 15px Sora,sans-serif}
+.cm span{padding:8px 0;text-align:center;border-radius:6px;background:#0b1a4d}
+.cm .hi{background:rgba(45,226,255,.22)}
+.note{max-width:70ch;border-left:3px solid var(--warn);padding:6px 0 6px 20px;color:var(--dim)}
+footer{padding:40px 0 60px;border-top:1px solid rgba(29,61,148,.6);color:var(--dim);font-size:15px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.scores{grid-template-columns:1fr}.hero-art{left:-200px}}
+@media(max-width:520px){.flow{grid-template-columns:1fr}nav div a:not(:last-child){display:none}}
+@media(prefers-reduced-motion:reduce){.hero-art path{animation:none;stroke-dashoffset:0}.bar u{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><span class="brand">SpiralWave</span><div><a href="#how">How it works</a><a href="#results">Model results</a></div></nav>
+
+<div class="hero">
+  <svg class="hero-art" viewBox="0 0 620 620" aria-hidden="true"><path id="heroSpiral"/></svg>
+  <div class="copy">
+    <h1>Draw a spiral. See what the model sees.</h1>
+    <p class="lead">Parkinson’s often changes how a hand moves, and that shows up in a simple drawing. Sketch a spiral or a wave, or upload one, and two trained models score it for tremor patterns.</p>
+    <a class="cta" href="#studio">Start drawing</a>
+    <div class="facts">
+      <div><b>90.0%</b><span>wave model, test set</span></div>
+      <div><b>76.7%</b><span>spiral model, test set</span></div>
+      <div><b>86.7%</b><span>both combined</span></div>
+    </div>
+  </div>
+
+  <div class="studio" id="studio">
+    <div id="status" class="stat" aria-live="polite"></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-k="spiral">Spiral<i></i></button>
+      <button class="tab" role="tab" aria-selected="false" data-k="wave">Wave<i></i></button>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="tools">
+      <button class="btn" id="clear">Clear</button>
+      <button class="btn" id="guide">Hide guide</button>
+      <button class="btn" id="upBtn">Upload image</button>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+    <button class="go" id="go" disabled>Analyze drawing</button>
+    <div id="out" aria-live="polite"></div>
+  </div>
+</div>
+
+<section id="how">
+  <h2>From pen strokes to a score</h2>
+  <p class="sub">Each drawing goes through the same steps the notebook used for training and testing.</p>
+  <div class="flow">
+    <div><h3>Draw or upload</h3><p>Trace the dashed spiral or wave, or upload a photo of a paper drawing.</p></div>
+    <div><h3>Resize to 224 × 224</h3><p>The image is scaled to the size EfficientNetB0 expects, in colour.</p></div>
+    <div><h3>Score with the matching model</h3><p>The spiral model and the wave model each output the chance of a Parkinson’s pattern.</p></div>
+    <div><h3>Average the two</h3><p>If you submit both drawings, their scores are averaged for a combined result.</p></div>
+  </div>
+</section>
+
+<section id="results">
+  <h2>How well the models did</h2>
+  <p class="sub">Measured on 30 held-out drawings per model, 15 healthy and 15 Parkinson’s. Matrix rows are the true class, columns the prediction.</p>
+  <div class="scores">
+    <div class="score"><b>76.7%</b><h3>Spiral model</h3><p>Healthy recall 0.93, Parkinson’s recall 0.60. It misses more Parkinson’s drawings than it flags wrongly.</p>
+      <div class="cm"><span class="hi">14</span><span>1</span><span>6</span><span class="hi">9</span></div></div>
+    <div class="score"><b>90.0%</b><h3>Wave model</h3><p>Healthy recall 0.93, Parkinson’s recall 0.87. The strongest single model.</p>
+      <div class="cm"><span class="hi">14</span><span>1</span><span>2</span><span class="hi">13</span></div></div>
+    <div class="score"><b>86.7%</b><h3>Combined</h3><p>Average of both models’ scores on the same 30 patients.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Before you rely on this</h2>
+  <p class="note">This is a student research project trained on a small dataset. It is not a medical device and cannot diagnose Parkinson’s disease. If you are worried about tremor or movement changes, see a doctor.</p>
+</section>
+
+<footer>Built from the Parkinson’s Disease Detection notebook by TS Sharan and SJ Viswak · EfficientNetB0 · Keras</footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), SIZE=448, NS='http://www.w3.org/2000/svg';
+const spiralD=(cx,cy,turns,R)=>{let d='',n=turns*70;for(let i=0;i<=n;i++){const t=i/n,a=t*turns*2*Math.PI,r=t*R;d+=(i?'L':'M')+(cx+r*Math.cos(a)).toFixed(1)+' '+(cy+r*Math.sin(a)).toFixed(1)}return d};
+const waveD=()=>{let d='';for(let x=20;x<=SIZE-20;x+=4){const y=SIZE/2+Math.sin((x-20)/(SIZE-40)*Math.PI*6)*90;d+=(d?'L':'M')+x+' '+y.toFixed(1)}return d};
+$('#heroSpiral').setAttribute('d',spiralD(310,310,7,290));
+
+const pads={}; let cur='spiral', guideOn=true;
+['spiral','wave'].forEach(k=>{
+  const box=document.createElement('div');box.style.cssText='position:absolute;inset:0';
+  const c=document.createElement('canvas');c.width=c.height=SIZE;
+  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,SIZE,SIZE);
+  g.lineWidth=4;g.lineCap=g.lineJoin='round';g.strokeStyle='#0a1a6b';
+  const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox',`0 0 ${SIZE} ${SIZE}`);
+  const p=document.createElementNS(NS,'path');p.setAttribute('d',k==='spiral'?spiralD(SIZE/2,SIZE/2,4,190):waveD());svg.appendChild(p);
+  const h=document.createElement('div');h.className='hint';h.textContent=k==='spiral'?'Trace the spiral from the centre outwards':'Trace the wave from left to right';
+  box.append(c,svg,h);$('#stage').appendChild(box);
+  const pad={box,c,g,hint:h,svg,ink:false};pads[k]=pad;
+  let down=false;
+  const pos=e=>{const r=c.getBoundingClientRect();return[(e.clientX-r.left)*SIZE/r.width,(e.clientY-r.top)*SIZE/r.height]};
+  c.addEventListener('pointerdown',e=>{down=true;c.setPointerCapture(e.pointerId);const[x,y]=pos(e);g.beginPath();g.moveTo(x,y);g.lineTo(x+.1,y);g.stroke();mark(k)});
+  c.addEventListener('pointermove',e=>{if(!down)return;const[x,y]=pos(e);g.lineTo(x,y);g.stroke();g.beginPath();g.moveTo(x,y)});
+  ['pointerup','pointercancel'].forEach(t=>c.addEventListener(t,()=>down=false));
+});
+function mark(k){pads[k].ink=true;pads[k].hint.style.opacity=0;document.querySelector(`.tab[data-k=${k}]`).classList.add('has');update()}
+function show(k){cur=k;for(const n in pads)pads[n].box.style.display=n===k?'':'none';
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.k===k));syncGuide()}
+function syncGuide(){for(const n in pads)pads[n].svg.style.display=guideOn?'':'none';$('#guide').textContent=guideOn?'Hide guide':'Show guide'}
+function update(){const n=Object.values(pads).filter(p=>p.ink).length;$('#go').disabled=!n;$('#go').textContent=n>1?'Analyze both drawings':'Analyze drawing'}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>show(t.dataset.k));
+$('#guide').onclick=()=>{guideOn=!guideOn;syncGuide()};
+$('#clear').onclick=()=>{const p=pads[cur];p.g.fillStyle='#fff';p.g.fillRect(0,0,SIZE,SIZE);p.ink=false;p.hint.style.opacity=1;document.querySelector(`.tab[data-k=${cur}]`).classList.remove('has');update()};
+$('#upBtn').onclick=()=>$('#file').click();
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const img=new Image();
+  img.onload=()=>{const p=pads[cur];p.g.fillStyle='#fff';p.g.fillRect(0,0,SIZE,SIZE);
+    const s=Math.min(SIZE/img.width,SIZE/img.height),w=img.width*s,h=img.height*s;p.g.drawImage(img,(SIZE-w)/2,(SIZE-h)/2,w,h);mark(cur);URL.revokeObjectURL(img.src)};
+  img.src=URL.createObjectURL(f);e.target.value=''};
+
+const toBlob=c=>new Promise(r=>c.toBlob(r,'image/png'));
+const card=(title,p,cls='',sim=false)=>{const pos=p>.5,pct=Math.round((pos?p:1-p)*100);
+  return `<div class="res ${cls} ${pos?'pos':'neg'}"><header><span>${title}</span><span>${(p*100).toFixed(1)}% Parkinson’s</span></header>
+  <div class="bar"><u style="width:0" data-w="${p*100}"></u><s></s></div>
+  <p>${pos?'Leans toward a Parkinson’s pattern':'Leans toward a healthy pattern'} (${pct}% on that side).${sim?' Simulated.':''}</p></div>`};
+function paint(r,sim){const o=$('#out');let h='';
+  if(sim)h+='<div class="msg sim">Preview only: the model server isn’t running, so these numbers are simulated and mean nothing. Start <code>python app.py</code> for real predictions.</div>';
+  if(r.spiral!=null)h+=card('Spiral model',r.spiral,'',sim);
+  if(r.wave!=null)h+=card('Wave model',r.wave,'',sim);
+  if(r.ensemble!=null)h+=card('Combined result',r.ensemble,'final',sim);
+  h+='<p style="font-size:14px;color:var(--dim)">A screening aid, not a diagnosis. Please see a doctor about any concern.</p>';
+  o.innerHTML=h;requestAnimationFrame(()=>o.querySelectorAll('u').forEach(u=>u.style.width=u.dataset.w+'%'))}
+function fake(){const r={spiral:null,wave:null,ensemble:null};
+  for(const k in pads){if(!pads[k].ink)continue;const d=pads[k].g.getImageData(0,0,SIZE,SIZE).data;let s=0;for(let i=0;i<d.length;i+=16)s+=255-d[i];r[k]=(Math.sin(s/9973)+1)/2}
+  if(r.spiral!=null&&r.wave!=null)r.ensemble=(r.spiral+r.wave)/2;return r}
+$('#go').onclick=async()=>{const b=$('#go');b.disabled=true;b.textContent='Analyzing…';$('#out').innerHTML='';
+  const fd=new FormData();
+  for(const k in pads)if(pads[k].ink)fd.append(k,await toBlob(pads[k].c),k+'.png');
+  try{const res=await fetch('/predict',{method:'POST',body:fd});if(!res.ok)throw new Error((await res.json()).error||res.status);paint(await res.json(),false)}
+  catch(err){if(err instanceof TypeError||String(err.message).startsWith('404')||location.protocol==='file:')paint(fake(),true);
+    else $('#out').innerHTML=`<div class="msg">${err.message}</div>`}
+  update()};
+show('spiral');
+fetch('/health').then(r=>r.json()).then(h=>{const el=$('#status'),on=Object.keys(h.models).filter(k=>h.models[k]),off=Object.keys(h.models).filter(k=>!h.models[k]);
+  if(!on.length){el.className='stat bad';el.textContent='Model server is running but no model files are loaded. Results will be simulated.'}
+  else if(off.length){el.className='stat bad';el.textContent='Live: '+on.join(', ')+' model. Not loaded: '+off.join(', ')+'.'}
+  else{el.className='stat ok';el.textContent='Live: spiral and wave models loaded. Predictions are real.'}
+}).catch(()=>{const el=$('#status');el.className='stat bad';el.textContent='No model server detected. Results will be simulated previews.'});
+</script>
+</body>
+</html>
